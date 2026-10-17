@@ -6,6 +6,7 @@
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Noto Serif TC", Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -34,50 +35,140 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.13 0.01 285);
-  --foreground: oklch(0.97 0.005 285);
-  --card: oklch(0.17 0.015 285);
-  --card-foreground: oklch(0.97 0.005 285);
-  --popover: oklch(0.17 0.015 285);
-  --popover-foreground: oklch(0.97 0.005 285);
-  --primary: oklch(0.62 0.22 295);
-  --primary-foreground: oklch(0.99 0 0);
-  --primary-glow: oklch(0.72 0.18 310);
-  --secondary: oklch(0.22 0.02 285);
-  --secondary-foreground: oklch(0.97 0.005 285);
-  --muted: oklch(0.22 0.02 285);
-  --muted-foreground: oklch(0.68 0.02 285);
-  --accent: oklch(0.25 0.04 295);
-  --accent-foreground: oklch(0.97 0.005 285);
-  --destructive: oklch(0.64 0.21 25);
+  /* Golden garden: sunlit sky, cream marble, gilded leaves, still water */
+  --radius: 0.875rem;
+  --background: oklch(0.965 0.014 85);
+  --foreground: oklch(0.3 0.045 60);
+  --card: oklch(0.985 0.01 88 / 0.82);
+  --card-foreground: oklch(0.3 0.045 60);
+  --popover: oklch(0.985 0.01 88);
+  --popover-foreground: oklch(0.3 0.045 60);
+  --primary: oklch(0.7 0.13 78);
+  --primary-foreground: oklch(0.22 0.04 60);
+  --primary-glow: oklch(0.58 0.12 68);
+  --secondary: oklch(0.93 0.025 85);
+  --secondary-foreground: oklch(0.3 0.045 60);
+  --muted: oklch(0.93 0.02 85);
+  --muted-foreground: oklch(0.47 0.04 65);
+  --accent: oklch(0.92 0.05 85);
+  --accent-foreground: oklch(0.3 0.045 60);
+  --destructive: oklch(0.55 0.19 30);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.26 0.02 285);
-  --input: oklch(0.26 0.02 285);
-  --ring: oklch(0.62 0.22 295);
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-hero: radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 28%, transparent), transparent 60%);
-  --shadow-glow: 0 10px 40px -10px color-mix(in oklab, var(--primary) 55%, transparent);
+  --border: oklch(0.84 0.06 82);
+  --input: oklch(0.82 0.06 80);
+  --ring: oklch(0.7 0.13 78);
+  --sky: oklch(0.72 0.1 245);
+  --sky-pale: oklch(0.9 0.04 235);
+  --gold-deep: oklch(0.5 0.1 62);
+  --gold-bright: oklch(0.88 0.12 92);
+  --gradient-primary: linear-gradient(
+    120deg,
+    var(--gold-deep) 0%,
+    var(--primary) 28%,
+    var(--gold-bright) 50%,
+    var(--primary) 72%,
+    var(--gold-deep) 100%
+  );
+  --gradient-hero:
+    radial-gradient(circle at 82% 4%, oklch(0.99 0.04 95 / 0.9), transparent 22%),
+    radial-gradient(ellipse 60% 40% at 15% 8%, oklch(0.86 0.11 85 / 0.55), transparent 70%),
+    linear-gradient(180deg, var(--sky) 0%, var(--sky-pale) 26%, var(--background) 52%);
+  --gradient-marble:
+    linear-gradient(115deg, transparent 38%, oklch(0.82 0.03 75 / 0.14) 40%, transparent 43%),
+    linear-gradient(62deg, transparent 58%, oklch(0.8 0.04 70 / 0.16) 60%, transparent 62%),
+    linear-gradient(160deg, transparent 20%, oklch(0.84 0.03 80 / 0.14) 21%, transparent 23%),
+    linear-gradient(180deg, oklch(0.99 0.008 88), oklch(0.95 0.018 82));
+  --shadow-glow:
+    0 10px 36px -10px color-mix(in oklab, var(--primary) 70%, transparent),
+    inset 0 1px 0 oklch(1 0 0 / 0.55);
+  --shadow-marble: 0 18px 50px -24px oklch(0.45 0.08 65 / 0.45);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   body {
     background-color: var(--color-background);
+    background-image: var(--gradient-marble);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+  ::selection { background: color-mix(in oklab, var(--primary) 45%, transparent); }
 }
 
-@utility bg-hero { background-image: var(--gradient-hero); }
-@utility bg-gradient-primary { background-image: var(--gradient-primary); }
+@utility bg-hero {
+  background-image: var(--gradient-hero);
+  background-repeat: no-repeat;
+  position: relative;
+  isolation: isolate;
+  /* glinting gilded leaves drifting near the top */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 420px;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(3px 2px at 12% 18%, var(--gold-bright), transparent),
+      radial-gradient(2px 3px at 22% 9%, var(--primary), transparent),
+      radial-gradient(3px 2px at 31% 26%, var(--gold-bright), transparent),
+      radial-gradient(2px 2px at 44% 12%, oklch(1 0 0), transparent),
+      radial-gradient(3px 2px at 58% 22%, var(--primary), transparent),
+      radial-gradient(2px 3px at 67% 7%, var(--gold-bright), transparent),
+      radial-gradient(3px 2px at 76% 30%, var(--primary), transparent),
+      radial-gradient(2px 2px at 88% 16%, oklch(1 0 0), transparent),
+      radial-gradient(3px 2px at 94% 34%, var(--gold-bright), transparent);
+    animation: shimmer 6s ease-in-out infinite alternate;
+  }
+  /* sunlight rippling on water at the bottom */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 160px;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      repeating-radial-gradient(ellipse 120% 40% at 50% 120%, transparent 0 14px, oklch(0.8 0.1 85 / 0.12) 15px 17px),
+      linear-gradient(180deg, transparent, oklch(0.86 0.06 85 / 0.35));
+  }
+}
+@utility bg-gradient-primary {
+  background-image: var(--gradient-primary);
+  background-size: 200% 100%;
+}
 @utility text-gradient {
   background-image: var(--gradient-primary);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 2px 6px oklch(0.35 0.06 60 / 0.25));
+  animation: gilt 8s ease-in-out infinite alternate;
 }
 @utility shadow-glow { box-shadow: var(--shadow-glow); }
+@utility marble {
+  background-image: var(--gradient-marble);
+  box-shadow: var(--shadow-marble);
+  backdrop-filter: blur(6px);
+}
+
+@keyframes shimmer {
+  from { opacity: 0.55; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(6px); }
+}
+@keyframes gilt {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient, .bg-hero::before { animation: none; }
+}
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(16px); }

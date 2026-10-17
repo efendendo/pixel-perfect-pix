@@ -42,11 +42,11 @@ export default function Auth({ mode }: { mode: "signin" | "signup" }) {
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary" />
       <header className="mx-auto w-full max-w-6xl py-5">
-        <Link to="/" className="font-semibold tracking-tight">Video Speed Reader</Link>
+        <Link to="/" className="font-display text-2xl font-semibold tracking-wide text-primary-glow">Video Speed Reader</Link>
       </header>
       <div className="flex flex-1 items-center justify-center pb-20">
-        <form onSubmit={onSubmit} className="w-full max-w-sm animate-fade-up rounded-2xl border bg-card p-8">
-          <h1 className="text-2xl font-semibold">{mode === "signin" ? "Sign in / 登入" : "Create account / 註冊"}</h1>
+        <form onSubmit={onSubmit} className="w-full max-w-sm marble animate-fade-up rounded-2xl border bg-card p-8">
+          <h1 className="text-3xl font-semibold">{mode === "signin" ? "Sign in / 登入" : "Create account / 註冊"}</h1>
           <div className="mt-6 space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -57,7 +57,7 @@ export default function Auth({ mode }: { mode: "signin" | "signup" }) {
               <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-gradient-primary shadow-glow" disabled={loading}>
               {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Sign up"}
             </Button>
           </div>

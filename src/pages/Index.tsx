@@ -39,8 +39,8 @@ export default function Index() {
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <span className="font-semibold tracking-tight">Video Speed Reader</span>
-        <Button asChild>
+        <span className="font-display text-2xl font-semibold tracking-wide text-primary-glow">Video Speed Reader</span>
+        <Button asChild className="bg-gradient-primary shadow-glow">
           <Link to="/sign-in">Sign in / 登入</Link>
         </Button>
       </header>
@@ -53,7 +53,7 @@ export default function Index() {
             </h1>
             <p className="mt-6 text-2xl font-medium sm:text-3xl">上傳影片，三分鐘內拿到逐字稿。</p>
             <p className="mt-3 text-lg text-muted-foreground">Upload your video, get a clean transcript in three minutes.</p>
-            <Button asChild size="lg" className="mt-10 shadow-glow">
+            <Button asChild size="lg" className="mt-10 bg-gradient-primary px-10 shadow-glow">
               <Link to="/sign-in">Get started</Link>
             </Button>
           </div>
@@ -62,11 +62,11 @@ export default function Index() {
         <section className="mx-auto grid max-w-6xl gap-6 px-6 pb-28 md:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={f.en} delay={i * 120}>
-              <div className="h-full rounded-2xl border bg-card p-7 transition-colors hover:border-primary/50">
-                <div className="mb-5 inline-flex rounded-lg bg-accent p-2.5 text-primary-glow">
+              <div className="h-full marble rounded-2xl border bg-card p-7 transition-all hover:-translate-y-1 hover:border-primary">
+                <div className="mb-5 inline-flex rounded-full border border-primary/40 bg-accent p-2.5 text-primary-glow">
                   <f.icon className="h-5 w-5" />
                 </div>
-                <h3 className="text-lg font-semibold">{f.title}</h3>
+                <h3 className="text-2xl font-semibold">{f.title}</h3>
                 <p className="text-sm text-muted-foreground">{f.en}</p>
                 <p className="mt-4 text-muted-foreground">{f.body}</p>
               </div>
@@ -75,7 +75,7 @@ export default function Index() {
         </section>
       </main>
 
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">© 2026 Video Speed Reader</footer>
+      <footer className="border-t border-primary/40 py-8 text-center text-sm text-muted-foreground">© 2026 Video Speed Reader</footer>
     </div>
   );
 }
