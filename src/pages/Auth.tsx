@@ -1,27 +1,12 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in — Video Speed Reader" },
-      { name: "description", content: "Sign in or create your Video Speed Reader account." },
-      { property: "og:title", content: "Sign in — Video Speed Reader" },
-      { property: "og:description", content: "Sign in or create your Video Speed Reader account." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: AuthPage,
-});
-
-function AuthPage() {
+export default function Auth({ mode }: { mode: "signin" | "signup" }) {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +14,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/app", replace: true });
+      if (data.session) navigate("/app", { replace: true });
     });
   }, [navigate]);
 
@@ -44,12 +29,18 @@ function AuthPage() {
     setLoading(false);
     if (error) return setError(error.message);
     const { data } = await supabase.auth.getSession();
-    if (data.session) navigate({ to: "/app", replace: true });
+    if (data.session) navigate("/app", { replace: true });
     else setError("Check your email to confirm your account.");
   }
 
   return (
     <div className="flex min-h-screen flex-col bg-hero px-6">
+      <title>Sign in — Video Speed Reader</title>
+      <meta name="description" content="Sign in or create your Video Speed Reader account." />
+      <meta property="og:title" content="Sign in — Video Speed Reader" />
+      <meta property="og:description" content="Sign in or create your Video Speed Reader account." />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary" />
       <header className="mx-auto w-full max-w-6xl py-5">
         <Link to="/" className="font-semibold tracking-tight">Video Speed Reader</Link>
       </header>
@@ -72,7 +63,7 @@ function AuthPage() {
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {mode === "signin" ? "No account yet?" : "Already have an account?"}{" "}
-            <button type="button" className="text-primary-glow hover:underline" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); }}>
+            <button type="button" className="text-primary-glow hover:underline" onClick={() => { navigate(mode === "signin" ? "/sign-up" : "/sign-in"); setError(null); }}>
               {mode === "signin" ? "Sign up" : "Sign in"}
             </button>
           </p>
