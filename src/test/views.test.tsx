@@ -36,3 +36,31 @@ describe("Views", () => {
     expect(screen.getByRole("heading", { name: "404" })).toBeInTheDocument();
   });
 });
+
+describe("UploadPage", () => {
+  const base = { created_at: new Date().toISOString(), video_source_url: "https://archive.org/download/MLKDream/MLKDream.mp3" };
+
+  it("shows the empty state", async () => {
+    const { default: UploadPage } = await import("@/views/UploadPage");
+    render(<UploadPage jobs={[]} />);
+    expect(screen.getByText("No transcriptions yet. Submit your first video below.")).toBeInTheDocument();
+  });
+
+  it("links the transcript only for done jobs", async () => {
+    const { default: UploadPage } = await import("@/views/UploadPage");
+    render(
+      <UploadPage
+        jobs={[
+          { ...base, id: "aaaaaaaa-1111-2222-3333-444444444444", status: "done" },
+          { ...base, id: "bbbbbbbb-1111-2222-3333-444444444444", status: "pending" },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("columnheader", { name: "Transcript" })).toBeInTheDocument();
+    const links = screen.getAllByRole("link", { name: ".txt" });
+    expect(links).toHaveLength(1);
+    expect(links[0]).toHaveAttribute("href", "/api/jobs/aaaaaaaa-1111-2222-3333-444444444444/transcript");
+    expect(links[0]).toHaveAttribute("download", "transcript-aaaaaaaa.txt");
+    expect(screen.getByText("—")).toBeInTheDocument();
+  });
+});
