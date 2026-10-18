@@ -1,12 +1,16 @@
-import { Link, useNavigate } from "react-router";
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function Auth({ mode }: { mode: "signin" | "signup" }) {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const [supabase] = useState(createClient);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -14,9 +18,9 @@ export default function Auth({ mode }: { mode: "signin" | "signup" }) {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/app", { replace: true });
+      if (data.session) router.replace("/app");
     });
-  }, [navigate]);
+  }, [router, supabase]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -29,20 +33,16 @@ export default function Auth({ mode }: { mode: "signin" | "signup" }) {
     setLoading(false);
     if (error) return setError(error.message);
     const { data } = await supabase.auth.getSession();
-    if (data.session) navigate("/app", { replace: true });
-    else setError("Check your email to confirm your account.");
+    if (data.session) {
+      router.replace("/app");
+      router.refresh();
+    } else setError("Check your email to confirm your account.");
   }
 
   return (
     <div className="flex min-h-screen flex-col bg-hero px-6">
-      <title>Sign in — Video Speed Reader</title>
-      <meta name="description" content="Sign in or create your Video Speed Reader account." />
-      <meta property="og:title" content="Sign in — Video Speed Reader" />
-      <meta property="og:description" content="Sign in or create your Video Speed Reader account." />
-      <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary" />
       <header className="mx-auto w-full max-w-6xl py-5">
-        <Link to="/" className="font-display text-2xl font-semibold tracking-wide text-primary-glow">Video Speed Reader</Link>
+        <Link href="/" className="font-display text-2xl font-semibold tracking-wide text-primary-glow">Video Speed Reader</Link>
       </header>
       <div className="flex flex-1 items-center justify-center pb-20">
         <form onSubmit={onSubmit} className="w-full max-w-sm marble animate-fade-up rounded-2xl border bg-card p-8">
@@ -63,7 +63,7 @@ export default function Auth({ mode }: { mode: "signin" | "signup" }) {
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {mode === "signin" ? "No account yet?" : "Already have an account?"}{" "}
-            <button type="button" className="text-primary-glow hover:underline" onClick={() => { navigate(mode === "signin" ? "/sign-up" : "/sign-in"); setError(null); }}>
+            <button type="button" className="text-primary-glow hover:underline" onClick={() => { router.push(mode === "signin" ? "/sign-up" : "/sign-in"); setError(null); }}>
               {mode === "signin" ? "Sign up" : "Sign in"}
             </button>
           </p>

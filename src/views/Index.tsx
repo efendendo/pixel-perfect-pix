@@ -1,4 +1,6 @@
-import { Link } from "react-router";
+"use client";
+
+import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Sparkles, Timer, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,19 +31,10 @@ const features = [
 export default function Index() {
   return (
     <div className="min-h-screen bg-hero">
-      <title>Video Speed Reader — Transcripts in three minutes</title>
-      <meta
-        name="description"
-        content="Upload your video, get a clean, accurate transcript in three minutes. Chinese and English supported."
-      />
-      <meta property="og:title" content="Video Speed Reader" />
-      <meta property="og:description" content="Upload your video, get a clean transcript in three minutes." />
-      <meta property="og:type" content="website" />
-      <meta name="twitter:card" content="summary_large_image" />
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <span className="font-display text-2xl font-semibold tracking-wide text-primary-glow">Video Speed Reader</span>
         <Button asChild className="bg-gradient-primary shadow-glow">
-          <Link to="/sign-in">Sign in / 登入</Link>
+          <Link href="/sign-in">Sign in / 登入</Link>
         </Button>
       </header>
 
@@ -54,7 +47,7 @@ export default function Index() {
             <p className="mt-6 text-2xl font-medium sm:text-3xl">上傳影片，三分鐘內拿到逐字稿。</p>
             <p className="mt-3 text-lg text-muted-foreground">Upload your video, get a clean transcript in three minutes.</p>
             <Button asChild size="lg" className="mt-10 bg-gradient-primary px-10 shadow-glow">
-              <Link to="/sign-in">Get started</Link>
+              <Link href="/sign-in">Get started</Link>
             </Button>
           </div>
         </section>
